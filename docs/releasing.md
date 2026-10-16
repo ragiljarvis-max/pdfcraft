@@ -169,6 +169,9 @@ The binaries are built on Ubuntu 22.04, the oldest GitHub-hosted image, so they 
 xkbcommon) and the GPU (Vulkan, EGL) are loaded at runtime from the system; the .deb and .rpm declare
 them as dependencies (see `nfpm.yaml`).
 
+For **Ubuntu 20.04 (glibc 2.31)**, build inside an `ubuntu:20.04` container instead — see
+[ubuntu-20.04-glibc-2.31.md](ubuntu-20.04-glibc-2.31.md) (`build-appimage.sh`, podman recipe).
+
 Each AppImage embeds update information
 (`gh-releases-zsync|storytold|pdfcraft|latest|pdfcraft-*-linux-<arch>.AppImage.zsync`), and its
 `.zsync` is published beside it, so AppImageUpdate and AppImageLauncher can update it in place,

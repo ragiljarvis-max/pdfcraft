@@ -1,6 +1,7 @@
 # Ubuntu 20.04 / glibc 2.31 support (AppImage)
 
 > **Status:** verified on 2026-10-16 · **Fork:** `ragiljarvis-max/pdfcraft` · **Base:** `5fdd820b` (v0.8.0)
+> **Release:** [`v0.8.0-glibc2.31`](https://github.com/ragiljarvis-max/pdfcraft/releases/tag/v0.8.0-glibc2.31) (published 2026-10-17)
 > **Scope:** the Linux AppImage (and deb/rpm metadata) must run on Ubuntu 20.04, which ships glibc 2.31.
 
 ## Summary
@@ -29,13 +30,19 @@ build flags: `cargo build --release --locked -p pdfcraft -p pdfcraft-cli`.
 | App run from the extracted `AppRun` | stayed alive, exit 124 ✅ |
 | AppImage executed directly (no `APPIMAGE_EXTRACT_AND_RUN`) | needs `fusermount`; absent in a container — see Limitations |
 
-Artifact produced by the container build:
+Published artifact (packaged 2026-10-17 with `GITHUB_REPOSITORY=ragiljarvis-max/pdfcraft`
+so AppImageUpdate resolves against this fork's releases instead of upstream):
 
 ```
 pdfcraft-0.8.0-linux-x86_64.AppImage       (51 MB)
-sha256 4b695ccbc57433ea08e1ab18e8da6c6863a5aaa5befb03c44cf57a5979e9786b
+sha256 d2648d9f333a4a0028366cb4816b482e6dd90e2a23bfa006aa1a2094769bda7f
 pdfcraft-0.8.0-linux-x86_64.AppImage.zsync (176 KB, delta updates)
+sha256 b40bf19d63bf0a044e99b2830b966e8ca6ccc7f289bb725168e3720488f19489
 ```
+
+`package.sh` reads `GITHUB_REPOSITORY` when it writes the embedded update information (same
+podman command as below, plus `-e GITHUB_REPOSITORY=ragiljarvis-max/pdfcraft`); rebuilding not
+required — the mounted `target-linux2004/` makes `cargo build` a no-op on unchanged sources.
 
 ## Repo changes in this fork
 
@@ -164,3 +171,5 @@ double-click / `chmod +x && ./pdfcraft-*.AppImage` — Ubuntu 20.04 desktops shi
 | 2026-10-16 | AppImage with `APPIMAGE_EXTRACT_AND_RUN=1`, default renderer (llvmpipe) | ✅ wgpu → OpenGL fallback, alive 12 s |
 | 2026-10-16 | AppImage with `WGPU_BACKEND=gl` under Xvfb | ✅ alive 12 s |
 | 2026-10-16 | extracted `AppRun` under Xvfb | ✅ alive 12 s |
+| 2026-10-17 | repackage with fork update-URL (`GITHUB_REPOSITORY=ragiljarvis-max/pdfcraft`, `build-appimage.sh` in ubuntu:20.04) → glibc re-check, `cli --version` | ✅ highest `GLIBC_2.30` |
+| 2026-10-17 | publish release `v0.8.0-glibc2.31` (AppImage + .zsync) on `ragiljarvis-max/pdfcraft` | ✅ |
